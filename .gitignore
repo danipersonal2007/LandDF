@@ -1,0 +1,17 @@
+.DS_Store
+
+.env
+
+node_modules/
+
+# React Router
+.react-router/
+build/
+
+.pglite_development/
+.pglite_test/
+
+.config/kysely.config.js
+.config/kysely.config.js.map
+
+.emulator/
