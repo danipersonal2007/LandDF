@@ -16,6 +16,5 @@ export default [
     route("access", "routes/access.tsx"),
     route("*", "routes/not-found.tsx"),
   ]),
-  route("resources/media", "routes/media.ts"),
   route("private-image/:name", "routes/private-image.ts"),
 ] satisfies RouteConfig;

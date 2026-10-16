@@ -3,9 +3,9 @@ import { randomUUID } from "node:crypto";
 import {
   GetObjectCommand,
   ListObjectsV2Command,
+  PutObjectCommand,
   S3Client,
 } from "@aws-sdk/client-s3";
-import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { bucketLocalConfiguration } from "@monolayer/sdk";
 
@@ -34,32 +34,23 @@ export interface MediaItem {
   date: string;
 }
 
-export async function createUpload(type: string, size: number) {
-  const extension = extensions[type];
-  if (
-    !extension ||
-    !Number.isSafeInteger(size) ||
-    size < 1 ||
-    size > MAX_MEDIA_BYTES
-  ) {
-    throw new Response(
-      "Choose a JPG, PNG, WebP, GIF, MP4, MOV, or WebM file under 250 MB.",
-      { status: 400 }
+export async function uploadMedia(file: File) {
+  const extension = extensions[file.type];
+  if (!extension || file.size < 1 || file.size > MAX_MEDIA_BYTES) {
+    throw new Error(
+      "Choose a JPG, PNG, WebP, GIF, MP4, MOV, or WebM file under 4 MB."
     );
   }
 
   const key = `uploads/${Date.now()}-${randomUUID()}.${extension}`;
-  const grant = await createPresignedPost(client, {
-    Bucket: weddingMedia.name,
-    Key: key,
-    Expires: 15 * 60,
-    Fields: { "Content-Type": type },
-    Conditions: [
-      ["content-length-range", 1, MAX_MEDIA_BYTES],
-      ["eq", "$Content-Type", type],
-    ],
-  });
-  return { ...grant, key };
+  await client.send(
+    new PutObjectCommand({
+      Bucket: weddingMedia.name,
+      Key: key,
+      Body: new Uint8Array(await file.arrayBuffer()),
+      ContentType: file.type,
+    })
+  );
 }
 
 export async function listMedia(): Promise<MediaItem[]> {

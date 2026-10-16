@@ -1,1 +1,1 @@
-export const MAX_MEDIA_BYTES = 250 * 1024 * 1024;
+export const MAX_MEDIA_BYTES = 4 * 1024 * 1024;
