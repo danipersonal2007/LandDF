@@ -20,6 +20,14 @@ export function GuestInfo({ details, activities }: GuestInfoProps) {
           <img src="/private-image/invite-map" alt="Official Cadaqués bay map for the wedding weekend" />
         </figure>
       </section>
+      <section className="gallery-invitation" aria-labelledby="gallery-invitation-title">
+        <div>
+          <p className="eyebrow">From all of us</p>
+          <h2 id="gallery-invitation-title">Weekend photos & videos</h2>
+          <p>Share your favorite moments and see everyone else&apos;s.</p>
+        </div>
+        <Link className="button primary" to="/photos">Open shared gallery</Link>
+      </section>
       <div className="info-grid">
         {details.map(({ title, copy }) => (
           <article className="info-card" key={title}>
@@ -29,14 +37,6 @@ export function GuestInfo({ details, activities }: GuestInfoProps) {
             </div>
           </article>
         ))}
-      </div>
-      <div className="gallery-invitation">
-        <div>
-          <p className="eyebrow">From all of us</p>
-          <h2>Weekend photos & videos</h2>
-          <p>Share your favorite moments and see everyone else&apos;s.</p>
-        </div>
-        <Link className="button primary" to="/photos">Open shared gallery</Link>
       </div>
       <section className="activity-section" aria-labelledby="activity-title">
         <p className="eyebrow">Around town</p>
