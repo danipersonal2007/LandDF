@@ -35,7 +35,7 @@ export default function Access() {
   const result = useActionData<typeof action>();
   return (
     <section className="section-pad gate-page">
-      <Form className="panel code-gate" method="post">
+      <Form className="panel code-gate" method="post" reloadDocument>
         <p className="eyebrow">For confirmed guests</p>
         <h1>Enter the shared code.</h1>
         <input type="hidden" name="returnTo" value={returnTo} />
