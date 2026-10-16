@@ -1196,12 +1196,20 @@ p {
 
 .media-heading h1 {
   max-width: 780px;
+  margin-bottom: 20px;
   color: var(--color-drive-blue);
+  font-size: clamp(38px, 5vw, 62px);
+  line-height: 1.08;
+  text-wrap: balance;
 }
 
 .media-heading p:last-child {
   max-width: 600px;
   margin-bottom: 0;
+  font-size: var(--text-body);
+  font-weight: 300;
+  letter-spacing: var(--tracking-body);
+  line-height: var(--leading-body);
 }
 
 .media-upload {
@@ -1226,6 +1234,10 @@ p {
   background: transparent;
   padding: 12px;
   cursor: pointer;
+}
+
+.media-upload input[type="file"]:disabled {
+  cursor: wait;
 }
 
 .media-upload input[type="file"]::file-selector-button {
@@ -1267,6 +1279,8 @@ p {
 
 .media-list-heading h2 {
   margin: 0;
+  font-size: var(--text-heading);
+  line-height: 1;
 }
 
 .media-list-heading span {

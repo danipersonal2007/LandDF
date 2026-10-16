@@ -156,14 +156,14 @@ export default function Photos() {
             accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/quicktime,video/webm"
             multiple
             onChange={chooseFiles}
-            disabled={uploading || storageError}
+            disabled={uploading}
           />
         </label>
         <button
           className="button primary"
           type="button"
           onClick={upload}
-          disabled={!files.length || uploading || storageError}
+          disabled={!files.length || uploading}
         >
           {uploading
             ? "Uploading..."
