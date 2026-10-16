@@ -26,7 +26,7 @@ export async function action({ request }: Route.ActionArgs) {
     };
   }
   throw redirect(returnTo, {
-    headers: { "Set-Cookie": await guestCookieHeader() },
+    headers: { "Set-Cookie": await guestCookieHeader(request) },
   });
 }
 

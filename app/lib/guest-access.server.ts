@@ -9,14 +9,16 @@ const secret =
   process.env.GUEST_SESSION_SECRET ??
   (process.env.NODE_ENV === "production" ? "" : "local-preview-only-secret");
 
-function sessionCookie() {
+function sessionCookie(request: Request) {
   if (!code || !secret) {
     throw new Response("Guest access is not configured", { status: 503 });
   }
+  const hostname = new URL(request.url).hostname;
+  const isLocalPreview = hostname === "localhost" || hostname === "127.0.0.1";
   return createCookie("landdf_guest", {
     httpOnly: true,
     sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    secure: process.env.NODE_ENV === "production" && !isLocalPreview,
     path: "/",
     maxAge: 60 * 60 * 24 * 30,
     secrets: [secret],
@@ -31,7 +33,7 @@ export function validGuestCode(input: string): boolean {
 }
 
 export async function hasGuestAccess(request: Request): Promise<boolean> {
-  const cookie = sessionCookie();
+  const cookie = sessionCookie(request);
   const value = await cookie.parse(request.headers.get("Cookie"));
   return value === "confirmed";
 }
@@ -43,8 +45,8 @@ export async function requireGuestAccess(request: Request): Promise<void> {
   }
 }
 
-export function guestCookieHeader(): Promise<string> {
-  return sessionCookie().serialize("confirmed");
+export function guestCookieHeader(request: Request): Promise<string> {
+  return sessionCookie(request).serialize("confirmed");
 }
 
 export function safeReturnTo(value: string | null): string {
